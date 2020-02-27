@@ -1,0 +1,165 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,800&display=swap');
+
+/* general */
+
+html {
+  font-family: 'Open Sans', sans-serif;
+  /* box-sizing: border-box; */
+}
+
+img {
+  height: 25px;
+  width: 25px;
+}
+
+input {
+  height: 25px;
+  width: 100%;
+}
+
+.hidden {
+  display: none;
+}
+
+/* header */
+
+.header {
+  background-color: #1F1F3D;
+  border: 1px solid red;
+  color: #FFFFFF;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header span {
+  color: #FFC303;
+}
+
+.searchbar {
+  display: flex;
+  margin-right: 20px;
+  width: 200px;
+}
+
+.search-btn {
+  background-color: #F3F6F7;
+  display: inline;
+  padding: 3px;
+}
+
+/* main */
+
+.entire-page {
+  border: 1px solid red;
+  font-weight: 400;
+  display: flex;
+  height: auto;
+}
+
+/* add new task */
+
+.new-task-aside {
+  border: 2px solid blue;
+  display: inline-block;
+  width: 32%;
+  background-color: #587A8A;
+}
+
+.new-task-container {
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 30px;
+}
+
+.add-task-item {
+  display: flex;
+  width: 100%;
+}
+
+.add-task-btn {
+  display: inline;
+  width: 40px;
+  background-color: #1F1F3D;
+  color: #FFFFFF;
+}
+
+.new-task-aside .new-task-btn,
+.urgent-btn  {
+  background-color: #1F1F3D;
+  color: #FFFFFF;
+  display: block;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.urgent-btn {
+  margin-top: 50px;
+}
+
+.urgent-btn-active {
+  background-color: #EF4A23;
+}
+
+/* to do list display */
+
+.tasks-display {
+  border: 2px solid DarkMagenta;
+  column-count: 2;
+  width: 66%;
+  height: auto;
+}
+
+.to-do-task {
+  background-color: #F3F6F7;
+  display: inline-block;
+  margin: 20px;
+  width: 90%;
+}
+
+.urgent-task {
+  background-color: #FFE89D;
+}
+
+.to-do-task p {
+  padding-left: 15px;
+}
+
+ul {
+  list-style-type: none;
+}
+
+li {
+  display: flex;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  word-break: break-word;
+  width: 70%;
+}
+
+.checked {
+  color: #3C6577;
+  font-style: italic;
+}
+
+li img {
+  padding-right: 15px;
+}
+
+.urgent-delete {
+  display: flex;
+  justify-content: space-between;
+}
+
+.urgent-icon,
+.delete-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.urgent-delete img,
+.urgent-delete p {
+  margin: 10px;
+}
