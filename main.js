@@ -14,11 +14,14 @@
 var addTaskBtn = document.querySelector('.add-task-btn');
 var newTaskInput = document.querySelector('.new-task-input');
 var taskTitle = document.querySelector('.task-title');
+var currentTasksDisplay = document.querySelector('.current-tasks-display');
+
 // global variables
-// var currentTasks = [];
+var currentTasks = [];
 
 
-addTaskBtn.addEventListener('click', makeNewTask);
+addTaskBtn.addEventListener('click', makeNewCurrentTask);
+currentTasksDisplay.addEventListener('click', deleteCurrentTask);
 
 window.onload = function() {
   if (!localStorage.getItem('toDos')) {
@@ -26,27 +29,38 @@ window.onload = function() {
   }
 }
 
-function makeNewTask() {
-  var currentTasks = [];
+function makeNewCurrentTask() {
+  // var currentTasks = [];
+  if (newTaskInput.value === '') {
+    return;
+  }
   var task = new Task(newTaskInput.value);
 
   currentTasks.push(task);
   displayCurrentTasks(currentTasks);
+  console.log(currentTasks);
 }
 
 function displayCurrentTasks(potentialTaskList) {
-  var currentTasksDisplay = document.querySelector('.current-tasks-display');
-
+  currentTasksDisplay.innerHTML = '';
   for (var i = 0; i < potentialTaskList.length; i++) {
     currentTasksDisplay.innerHTML += `
-      <li><img src="assets/delete.svg" alt="">${potentialTaskList[i].taskDescription}</li>
+      <li class="current-task"><img class="delete-current-task" src="assets/delete.svg" alt="">${potentialTaskList[i].taskDescription}</li>
     `;
+  }
+  newTaskInput.value = '';
+}
+
+function deleteCurrentTask(event) {
+  if (event.target.matches('.delete-current-task')) {
+    event.target.closest('li').remove();
+    var currentTasksList = document.querySelectorAll('.current-task');
+    console.log(currentTasksList);
   }
 }
 
 function displayToDos() {
   var toDoListArray = JSON.parse(localStorage.getItem('toDos'));
   for (var i = 0; i < toDoListArray.length; i++) {
-
   }
 }
