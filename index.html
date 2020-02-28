@@ -18,22 +18,22 @@
   <main class="entire-page">
     <div class="new-task-aside">
       <div class="new-task-container">
-        <p>Task Title</p>
-        <input class type="text" name="" value="">
+        <p>To-do Title</p>
+        <input class="task-title" type="text" name="" value="">
         <p>Task Item</p>
         <div class="add-task-item">
-          <input type="text" name="" value="">
+          <input class="new-task-input" type="text" name="" value="">
           <button class="add-task-btn" type="button" name="button">+</button>
         </div>
-        <button class="new-task-btn" type="button" name="button">Make Task List</button>
+        <button class="new-task-btn" type="button" name="button">Make To-do List</button>
         <button class="new-task-btn" type="button" name="button">Clear All</button>
         <button class="urgent-btn" type="button" name="button">Filter by Urgency</button>
       </div>
     </div>
     <div class="tasks-display">
-      <h3>Make a To-do!</h3>
+      <h3 class="prompt">Make a To-do!</h3>
       <div class="to-do-task">
-        <p>Task Title</p>
+        <p>To-do Title</p>
         <ul>
           <li><img src="assets/checkbox.svg" alt="">Task 1</li>
           <li><img src="assets/checkbox.svg" alt="">Task 2</li>
@@ -51,26 +51,7 @@
         </div>
       </div>
       <div class="to-do-task">
-        <p>Task Title</p>
-        <ul>
-          <li><img src="assets/checkbox.svg" alt="">Task 1</li>
-          <li><img src="assets/checkbox.svg" alt="">Task 2</li>
-          <li><img src="assets/checkbox.svg" alt="">Task 3</li>
-          <li><img src="assets/checkbox.svg" alt="">Task 3</li>
-        </ul>
-        <div class="urgent-delete">
-          <div class="urgent-icon">
-            <img src="assets/urgent.svg" alt="">
-            <p>URGENT</p>
-          </div>
-          <div class="delete-icon">
-            <img src="assets/delete.svg" alt="">
-            <p>DELETE</p>
-          </div>
-        </div>
-      </div>
-      <div class="to-do-task">
-        <p>Task Title</p>
+        <p>To-do Title</p>
         <ul>
           <li><img src="assets/checkbox.svg" alt="">Task 1</li>
           <li><img src="assets/checkbox.svg" alt="">Task 2</li>
@@ -89,7 +70,26 @@
         </div>
       </div>
       <div class="to-do-task">
-        <p>Task Title</p>
+        <p>To-do Title</p>
+        <ul>
+          <li><img src="assets/checkbox.svg" alt="">Task 1</li>
+          <li><img src="assets/checkbox.svg" alt="">Task 2</li>
+          <li><img src="assets/checkbox.svg" alt="">Task 3</li>
+          <li><img src="assets/checkbox.svg" alt="">Task 3</li>
+        </ul>
+        <div class="urgent-delete">
+          <div class="urgent-icon">
+            <img src="assets/urgent.svg" alt="">
+            <p>URGENT</p>
+          </div>
+          <div class="delete-icon">
+            <img src="assets/delete.svg" alt="">
+            <p>DELETE</p>
+          </div>
+        </div>
+      </div>
+      <div class="to-do-task">
+        <p>To-do Title</p>
         <ul>
           <li><img src="assets/checkbox.svg" alt="">Task 1</li>
           <li><img src="assets/checkbox.svg" alt="">Task 2</li>
@@ -108,7 +108,9 @@
       </div>
     </div>
   </main>
-
+<script src="main.js" charset="utf-8"></script>
+<script src="todo-list.js" charset="utf-8"></script>
+<script src="task.js" charset="utf-8"></script>
 </body>
 
 </html>

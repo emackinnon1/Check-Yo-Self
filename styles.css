@@ -31,6 +31,10 @@ input {
   justify-content: space-between;
 }
 
+h1 {
+  margin-left: 25px;
+}
+
 .header span {
   color: #FFC303;
 }
