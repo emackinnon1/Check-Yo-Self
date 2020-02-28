@@ -13,7 +13,6 @@
 // DOM nodes
 var addTaskBtn = document.querySelector('.add-task-btn');
 var newTaskInput = document.querySelector('.new-task-input');
-// var toDoTitle = document.querySelector('.todo-title');
 var currentTasksDisplay = document.querySelector('.current-tasks-display');
 var makeToDoBtn = document.querySelector('.new-todo-btn');
 
@@ -64,11 +63,26 @@ function deleteCurrentTask(event) {
   }
 }
 
+// clear currentTasks array and currentTasks nodelist
+function clearCurrentTasks() {
+  currentTasks = [];
+  currentTasksDisplay.innerHTML = '';
+}
+
 // creates to do list
 function makeToDoList() {
-  var toDo = new ToDoList(document.querySelector('.todo-title'), currentTasks);
+  var toDoTitle = document.querySelector('.todo-title');
+
+  if (toDoTitle === '') {
+    return;
+  }
+  var toDo = new ToDoList(toDoTitle, currentTasks);
   listOfToDoLists.push(toDo);
-  console.log(listOfToDoLists)
+  clearCurrentTasks();
+  console.log('array of todos', listOfToDoLists);
+  console.log(currentTasks);
+  console.log(currentTasksDisplay);
+
 }
 
 function displayToDos() {
