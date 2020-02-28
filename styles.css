@@ -4,7 +4,6 @@
 
 html {
   font-family: 'Open Sans', sans-serif;
-  /* box-sizing: border-box; */
 }
 
 img {
@@ -25,7 +24,6 @@ input {
 
 .header {
   background-color: #1F1F3D;
-  border: 1px solid red;
   color: #FFFFFF;
   font-weight: 800;
   display: flex;
@@ -52,7 +50,6 @@ input {
 /* main */
 
 .entire-page {
-  border: 1px solid red;
   font-weight: 400;
   display: flex;
   height: auto;
@@ -61,7 +58,6 @@ input {
 /* add new task */
 
 .new-task-aside {
-  border: 2px solid blue;
   display: inline-block;
   width: 32%;
   background-color: #587A8A;
@@ -90,6 +86,8 @@ input {
   background-color: #1F1F3D;
   color: #FFFFFF;
   display: block;
+  font-size: 20px;
+  height: 40px;
   margin-top: 20px;
   width: 100%;
 }
@@ -104,8 +102,11 @@ input {
 
 /* to do list display */
 
+h3 {
+  margin: 20px;
+}
+
 .tasks-display {
-  border: 2px solid DarkMagenta;
   column-count: 2;
   width: 66%;
   height: auto;
@@ -113,6 +114,7 @@ input {
 
 .to-do-task {
   background-color: #F3F6F7;
+  border: 1px solid #C7D3D8;
   display: inline-block;
   margin: 20px;
   width: 90%;
@@ -120,12 +122,21 @@ input {
 
 .urgent-task {
   background-color: #FFE89D;
+  border: 1px solid #FFC303;
 }
 
 .to-do-task p {
   padding-left: 15px;
+  padding-right: 15px;
 }
 
+.to-do-task > p {
+  border-bottom: 1px solid #C7D3D8;
+}
+
+.to-do-task > .urgent-delete {
+  border-top: 1px solid #C7D3D8;
+}
 ul {
   list-style-type: none;
 }
