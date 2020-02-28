@@ -38,14 +38,18 @@ function makeNewCurrentTask() {
 
   currentTasks.push(task);
   displayCurrentTasks(currentTasks);
-  console.log(currentTasks);
+
+  var currentTaskNodeList = document.querySelectorAll('.current-task');
+
+  console.log("current task node list", currentTaskNodeList);
+  console.log("current task array", currentTasks);
 }
 
 function displayCurrentTasks(potentialTaskList) {
   currentTasksDisplay.innerHTML = '';
   for (var i = 0; i < potentialTaskList.length; i++) {
     currentTasksDisplay.innerHTML += `
-      <li class="current-task"><img class="delete-current-task" src="assets/delete.svg" alt="">${potentialTaskList[i].taskDescription}</li>
+      <li class="current-task task${i}"><img class="delete-current-task" src="assets/delete.svg" alt="">${potentialTaskList[i].taskDescription}</li>
     `;
   }
   newTaskInput.value = '';
@@ -53,9 +57,15 @@ function displayCurrentTasks(potentialTaskList) {
 
 function deleteCurrentTask(event) {
   if (event.target.matches('.delete-current-task')) {
+    console.log(event.target.closest('li').classList[1].slice(4));
+    var index = event.target.closest('li').classList[1].slice(4);
+    currentTasks.splice(index, 1);
     event.target.closest('li').remove();
-    var currentTasksList = document.querySelectorAll('.current-task');
-    console.log(currentTasksList);
+
+    var currentTaskNodeList = document.querySelectorAll('.current-task');
+
+    console.log("current task node list", currentTaskNodeList);
+    console.log("current task array", currentTasks);
   }
 }
 
