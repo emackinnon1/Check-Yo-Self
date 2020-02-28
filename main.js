@@ -15,23 +15,38 @@ var addTaskBtn = document.querySelector('.add-task-btn');
 var newTaskInput = document.querySelector('.new-task-input');
 var taskTitle = document.querySelector('.task-title');
 // global variables
-var currentTasks = [];
+// var currentTasks = [];
 
 
 addTaskBtn.addEventListener('click', makeNewTask);
 
 window.onload = function() {
   if (!localStorage.getItem('toDos')) {
-    document.querySelector('.prompt').classList.remove('hidden')
+    document.querySelector('.prompt').classList.remove('hidden');
   }
 }
 
 function makeNewTask() {
-   var task = new Task(newTaskInput.value);
+  var currentTasks = [];
+  var task = new Task(newTaskInput.value);
 
+  currentTasks.push(task);
+  displayCurrentTasks(currentTasks);
+}
+
+function displayCurrentTasks(potentialTaskList) {
+  var currentTasksDisplay = document.querySelector('.current-tasks-display');
+
+  for (var i = 0; i < potentialTaskList.length; i++) {
+    currentTasksDisplay.innerHTML += `
+      <li><img src="assets/delete.svg" alt="">${potentialTaskList[i].taskDescription}</li>
+    `;
+  }
 }
 
 function displayToDos() {
   var toDoListArray = JSON.parse(localStorage.getItem('toDos'));
-  for (var i = 0; i < toDoListArray.length; )
+  for (var i = 0; i < toDoListArray.length; i++) {
+
+  }
 }
