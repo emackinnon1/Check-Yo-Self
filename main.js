@@ -12,9 +12,11 @@
 
 // DOM nodes
 var addTaskBtn = document.querySelector('.add-task-btn');
+var toDoTitle = document.querySelector('.todo-title');
 var newTaskInput = document.querySelector('.new-task-input');
 var currentTasksDisplay = document.querySelector('.current-tasks-display');
 var makeToDoBtn = document.querySelector('.new-todo-btn');
+var toDoDisplay = document.querySelector('.tasks-display');
 
 // global variables
 var currentTasks = [];
@@ -26,11 +28,19 @@ currentTasksDisplay.addEventListener('click', deleteCurrentTask);
 makeToDoBtn.addEventListener('click', makeToDoList);
 
 // displays prompt if there are no Todo lists in localStorage
-window.onload = function() {
-  if (!localStorage.getItem('toDos')) {
-    document.querySelector('.prompt').classList.remove('hidden');
-  }
-}
+// window.onload = function() {
+//   if (!localStorage.getItem('toDos')) {
+//     document.querySelector('.prompt').classList.remove('hidden');
+//   }
+// }
+
+// function hidePrompt() {
+//   if (!document.querySelector('.prompt').classList.contains('hidden')) {
+//     document.querySelector('.prompt').classList.add('hidden');
+//   } else {
+//     return;
+//   }
+// }
 
 // instantiates new task according to user input
 function makeNewCurrentTask() {
@@ -56,7 +66,6 @@ function displayCurrentTasks(potentialTaskList) {
 // deletes selected task from DOM and from currentTasks array
 function deleteCurrentTask(event) {
   if (event.target.matches('.delete-current-task')) {
-    console.log(event.target.closest('li').classList[1].slice(4));
     var index = event.target.closest('li').classList[1].slice(4);
     currentTasks.splice(index, 1);
     event.target.closest('li').remove();
@@ -65,28 +74,59 @@ function deleteCurrentTask(event) {
 
 // clear currentTasks array and currentTasks nodelist
 function clearCurrentTasks() {
-  currentTasks = [];
-  currentTasksDisplay.innerHTML = '';
+  if (toDoTitle.value.length > 1 || newTaskInput.value.length > 1) {
+    currentTasks = [];
+    // listOfToDoLists = [];
+    toDoTitle.value = '';
+    newTaskInput.value = '';
+    currentTasksDisplay.innerHTML = '';
+  }
 }
 
 // creates to do list
 function makeToDoList() {
-  var toDoTitle = document.querySelector('.todo-title');
-
-  if (toDoTitle === '') {
+  if (toDoTitle.value === '') {
     return;
   }
-  var toDo = new ToDoList(toDoTitle, currentTasks);
+  var toDo = new ToDoList(toDoTitle.value, currentTasks);
   listOfToDoLists.push(toDo);
   clearCurrentTasks();
-  console.log('array of todos', listOfToDoLists);
-  console.log(currentTasks);
-  console.log(currentTasksDisplay);
-
+  displayToDos(listOfToDoLists);
 }
 
-function displayToDos() {
-  var toDoListStorageArray = JSON.parse(localStorage.getItem('toDos'));
-  for (var i = 0; i < toDoListStorageArray.length; i++) {
+// make inner task list for todo card
+function makeInnerTaskList(toDo) {
+  var innerTasks = document.querySelector('.card-inner-tasks');
+
+  for (var i = 0; i < toDo.length; i++) {
+    innerTasks.innerHTML += `
+      <li><img src="assets/checkbox.svg">${toDo[i].taskDescription}</li>
+    `;
+    console.log(toDo[i].taskDescription);
+  }
+}
+
+// display todo list cards
+function displayToDos(toDoArray) {
+  var toDosStorageArray = JSON.parse(localStorage.getItem('toDos'));
+  toDoDisplay.innerHTML = '';
+  for (var i = 0; i < toDoArray.length; i++) {
+    toDoDisplay.innerHTML += `
+    <div class="to-do-task">
+      <p>${toDoArray[i].title}</p>
+      <ul class="card-inner-tasks">
+      </ul>
+      <div class="urgent-delete">
+        <div class="urgent-icon">
+          <img src="assets/urgent.svg" alt="">
+          <p>URGENT</p>
+        </div>
+        <div class="delete-icon">
+          <img src="assets/delete.svg" alt="">
+          <p>DELETE</p>
+        </div>
+      </div>
+    </div>`;
+    makeInnerTaskList(toDoArray[i].tasks);
   }
 }

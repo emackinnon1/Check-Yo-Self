@@ -17,7 +17,7 @@ input {
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 /* header */
@@ -65,6 +65,7 @@ h1 {
   display: inline-block;
   width: 32%;
   background-color: #587A8A;
+  height: 100vh;
 }
 
 .new-task-container {
