@@ -74,13 +74,11 @@ function deleteCurrentTask(event) {
 
 // clear currentTasks array and currentTasks nodelist
 function clearCurrentTasks() {
-  if (toDoTitle.value.length > 1 || newTaskInput.value.length > 1) {
     currentTasks = [];
     // listOfToDoLists = [];
     toDoTitle.value = '';
     newTaskInput.value = '';
     currentTasksDisplay.innerHTML = '';
-  }
 }
 
 // creates to do list
@@ -90,20 +88,17 @@ function makeToDoList() {
   }
   var toDo = new ToDoList(toDoTitle.value, currentTasks);
   listOfToDoLists.push(toDo);
-  clearCurrentTasks();
   displayToDos(listOfToDoLists);
+  clearCurrentTasks();
 }
 
 // make inner task list for todo card
-function makeInnerTaskList(toDo) {
-  var innerTasks = document.querySelector('.card-inner-tasks');
-
-  for (var i = 0; i < toDo.length; i++) {
-    innerTasks.innerHTML += `
-      <li><img src="assets/checkbox.svg">${toDo[i].taskDescription}</li>
-    `;
-    console.log(toDo[i].taskDescription);
-  }
+function makeInnerTaskList(toDo, innerTasks) {
+    for (var i = 0; i < toDo.length; i++) {
+      innerTasks.innerHTML += `
+        <li><img src="assets/checkbox.svg">${toDo[i].taskDescription}</li>
+      `;
+    }
 }
 
 // display todo list cards
@@ -111,10 +106,13 @@ function displayToDos(toDoArray) {
   var toDosStorageArray = JSON.parse(localStorage.getItem('toDos'));
   toDoDisplay.innerHTML = '';
   for (var i = 0; i < toDoArray.length; i++) {
-    toDoDisplay.innerHTML += `
+    // var innerTasks = document.querySelector('.card-inner-tasks');
+    var newToDoCard = document.createElement('div');
+    newToDoCard.classList.add('to-do-task');
+    newToDoCard.innerHTML = `
     <div class="to-do-task">
       <p>${toDoArray[i].title}</p>
-      <ul class="card-inner-tasks">
+      <ul class="card-inner-tasks${i}">
       </ul>
       <div class="urgent-delete">
         <div class="urgent-icon">
@@ -127,6 +125,7 @@ function displayToDos(toDoArray) {
         </div>
       </div>
     </div>`;
-    makeInnerTaskList(toDoArray[i].tasks);
+    toDoDisplay.appendChild(newToDoCard);
+    makeInnerTaskList(toDoArray[i].tasks, document.querySelector(`.card-inner-tasks${i}`));
   }
 }
