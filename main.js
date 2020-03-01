@@ -106,7 +106,6 @@ function displayToDos(toDoArray) {
   var toDosStorageArray = JSON.parse(localStorage.getItem('toDos'));
   toDoDisplay.innerHTML = '';
   for (var i = 0; i < toDoArray.length; i++) {
-    // var innerTasks = document.querySelector('.card-inner-tasks');
     var newToDoCard = document.createElement('div');
     newToDoCard.classList.add('to-do-task');
     newToDoCard.innerHTML = `
@@ -126,6 +125,10 @@ function displayToDos(toDoArray) {
       </div>
     </div>`;
     toDoDisplay.appendChild(newToDoCard);
+    if (toDoDisplay.childNodes.length === 0) {
+    } else {
+      toDoDisplay.insertBefore(newToDoCard, toDoDisplay.childNodes[0])
+    }
     makeInnerTaskList(toDoArray[i].tasks, document.querySelector(`.card-inner-tasks${i}`));
   }
 }
