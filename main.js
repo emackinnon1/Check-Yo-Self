@@ -1,15 +1,3 @@
-// function that creates tasks and passes them into array
-// function that pushes array of tasks into new todo list
-// function that displays the todos
-// function that stores todos
-// function that sorts todos by date
-// function that pulls todos from storage
-// function that
-
-// create tasks
-// hold them in an array, loop through to display them on new-task-aside
-// when you click button to make to do list
-
 // DOM nodes
 var addTaskBtn = document.querySelector('.add-task-btn');
 var toDoTitle = document.querySelector('.todo-title');
@@ -17,30 +5,27 @@ var newTaskInput = document.querySelector('.new-task-input');
 var currentTasksDisplay = document.querySelector('.current-tasks-display');
 var makeToDoBtn = document.querySelector('.new-todo-btn');
 var toDoDisplay = document.querySelector('.tasks-display');
+var clearAllBtn = document.querySelector('.clear-all-btn');
 
 // global variables
 var currentTasks = [];
 var listOfToDoLists = [];
-
+var storedToDos = JSON.parse(localStorage.getItem('toDos'));
 
 addTaskBtn.addEventListener('click', makeNewCurrentTask);
 currentTasksDisplay.addEventListener('click', deleteCurrentTask);
 makeToDoBtn.addEventListener('click', makeToDoList);
+clearAllBtn.addEventListener('click', clearCurrentTasks);
 
-// displays prompt if there are no Todo lists in localStorage
-// window.onload = function() {
-//   if (!localStorage.getItem('toDos')) {
-//     document.querySelector('.prompt').classList.remove('hidden');
-//   }
-// }
-
-// function hidePrompt() {
-//   if (!document.querySelector('.prompt').classList.contains('hidden')) {
-//     document.querySelector('.prompt').classList.add('hidden');
-//   } else {
-//     return;
-//   }
-// }
+// sets local storage if not previously set
+window.onload = function() {
+  if (!localStorage.getItem('toDos')) {
+    localStorage.setItem('toDos', JSON.stringify([]));
+  }
+  if (localStorage.toDos.length > 2) {
+    displayToDos(JSON.parse(localStorage.getItem('toDos')));
+  }
+}
 
 // instantiates new task according to user input
 function makeNewCurrentTask() {
@@ -74,11 +59,10 @@ function deleteCurrentTask(event) {
 
 // clear currentTasks array and currentTasks nodelist
 function clearCurrentTasks() {
-    currentTasks = [];
-    // listOfToDoLists = [];
-    toDoTitle.value = '';
-    newTaskInput.value = '';
-    currentTasksDisplay.innerHTML = '';
+  currentTasks = [];
+  toDoTitle.value = '';
+  newTaskInput.value = '';
+  currentTasksDisplay.innerHTML = '';
 }
 
 // creates to do list
@@ -87,23 +71,22 @@ function makeToDoList() {
     return;
   }
   var toDo = new ToDoList(toDoTitle.value, currentTasks);
-  listOfToDoLists.push(toDo);
-  displayToDos(listOfToDoLists);
+  toDo.saveToStorage(toDo);
+  displayToDos(JSON.parse(localStorage.getItem('toDos')));
   clearCurrentTasks();
 }
 
 // make inner task list for todo card
 function makeInnerTaskList(toDo, innerTasks) {
-    for (var i = 0; i < toDo.length; i++) {
-      innerTasks.innerHTML += `
-        <li><img src="assets/checkbox.svg">${toDo[i].taskDescription}</li>
-      `;
-    }
+  for (var i = 0; i < toDo.length; i++) {
+    innerTasks.innerHTML += `<li><img src="assets/checkbox.svg">${toDo[i].taskDescription}</li>`;
+  }
 }
 
 // display todo list cards
 function displayToDos(toDoArray) {
   var toDosStorageArray = JSON.parse(localStorage.getItem('toDos'));
+
   toDoDisplay.innerHTML = '';
   for (var i = 0; i < toDoArray.length; i++) {
     var newToDoCard = document.createElement('div');
@@ -124,11 +107,7 @@ function displayToDos(toDoArray) {
         </div>
       </div>
     </div>`;
-    toDoDisplay.appendChild(newToDoCard);
-    if (toDoDisplay.childNodes.length === 0) {
-    } else {
-      toDoDisplay.insertBefore(newToDoCard, toDoDisplay.childNodes[0])
-    }
+    toDoDisplay.insertBefore(newToDoCard, toDoDisplay.childNodes[0])
     makeInnerTaskList(toDoArray[i].tasks, document.querySelector(`.card-inner-tasks${i}`));
   }
 }

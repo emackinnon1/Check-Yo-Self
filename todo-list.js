@@ -7,8 +7,14 @@ class ToDoList {
     this.delete = false;
   }
 
-  saveToStorage() {
+  parseStoredObject(object) {
+    // object.title =
+  }
 
+  saveToStorage(obj) {
+    var retrievedToDos = JSON.parse(localStorage.getItem('toDos'));
+    retrievedToDos.push(obj);
+    localStorage.setItem('toDos', JSON.stringify(retrievedToDos));
   }
 
   deleteFromStorage() {
