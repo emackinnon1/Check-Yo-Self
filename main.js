@@ -92,7 +92,6 @@ function displayToDos(toDoArray) {
     var newToDoCard = document.createElement('div');
     newToDoCard.classList.add('to-do-task');
     newToDoCard.innerHTML = `
-    <div class="to-do-task">
       <p>${toDoArray[i].title}</p>
       <ul class="card-inner-tasks${i}">
       </ul>
@@ -105,8 +104,7 @@ function displayToDos(toDoArray) {
           <img src="assets/delete.svg" alt="">
           <p>DELETE</p>
         </div>
-      </div>
-    </div>`;
+      </div>`;
     toDoDisplay.insertBefore(newToDoCard, toDoDisplay.childNodes[0])
     makeInnerTaskList(toDoArray[i].tasks, document.querySelector(`.card-inner-tasks${i}`));
   }
