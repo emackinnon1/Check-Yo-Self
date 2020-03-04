@@ -1,4 +1,4 @@
-// DOM nodes
+// DOM node variables
 var addTaskBtn = document.querySelector('.add-task-btn');
 var toDoTitle = document.querySelector('.todo-title');
 var newTaskInput = document.querySelector('.new-task-input');
@@ -6,16 +6,19 @@ var currentTasksDisplay = document.querySelector('.current-tasks-display');
 var makeToDoBtn = document.querySelector('.new-todo-btn');
 var toDoDisplay = document.querySelector('.tasks-display');
 var clearAllBtn = document.querySelector('.clear-all-btn');
+var checkBoxes = document.querySelectorAll('.task-checkbox');
 
 // global variables
 var currentTasks = [];
 var listOfToDoLists = [];
 var storedToDos = JSON.parse(localStorage.getItem('toDos'));
 
+// event listeners
 addTaskBtn.addEventListener('click', makeNewCurrentTask);
 currentTasksDisplay.addEventListener('click', deleteCurrentTask);
 makeToDoBtn.addEventListener('click', makeToDoList);
 clearAllBtn.addEventListener('click', clearCurrentTasks);
+toDoDisplay.addEventListener('click', checkOffTask);
 
 // sets local storage if not previously set
 window.onload = function() {
@@ -79,7 +82,7 @@ function makeToDoList() {
 // make inner task list for todo card
 function makeInnerTaskList(toDo, innerTasks) {
   for (var i = 0; i < toDo.length; i++) {
-    innerTasks.innerHTML += `<li><img src="assets/checkbox.svg">${toDo[i].taskDescription}</li>`;
+    innerTasks.innerHTML += `<li><img class="task-checkbox" src="assets/checkbox.svg">${toDo[i].taskDescription}</li>`;
   }
 }
 
@@ -107,5 +110,11 @@ function displayToDos(toDoArray) {
       </div>`;
     toDoDisplay.insertBefore(newToDoCard, toDoDisplay.childNodes[0])
     makeInnerTaskList(toDoArray[i].tasks, document.querySelector(`.card-inner-tasks${i}`));
+  }
+}
+
+function checkOffTask(event) {
+  if (event.target.src = 'assets/checkbox.svg') {
+    event.target.src = 'assets/checkbox-active.svg';
   }
 }
