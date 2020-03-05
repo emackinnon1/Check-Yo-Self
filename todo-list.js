@@ -23,8 +23,7 @@ class ToDoList {
 
   updateTask(index, objects) {
     this.tasks[index].done = true;
-    localStorage.setItem('toDos', JSON.stringify(objects));
-    console.log(objects);
+    // localStorage.setItem('toDos', JSON.stringify(objects));
   }
 
 }

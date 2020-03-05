@@ -82,11 +82,17 @@ function makeToDoList() {
 // make inner task list for todo card
 function makeInnerTaskList(toDo, innerTasks) {
   for (var i = 0; i < toDo.length; i++) {
+    var newTask = document.createElement('li');
+    var newCheckBox = document.createElement('img');
     if (toDo[i].done === true) {
-      innerTasks.innerHTML += `<li><img class="task-checkbox" src="assets/checkbox-active.svg">${toDo[i].taskDescription}</li>`;
+      newCheckBox.src = "assets/checkbox-active.svg"
     } else {
-      innerTasks.innerHTML += `<li><img class="task-checkbox" src="assets/checkbox.svg">${toDo[i].taskDescription}</li>`;
+      newCheckBox.src = "assets/checkbox.svg";
     }
+    innerTasks.appendChild(newTask);
+    newTask.setAttribute('data-index', i);
+    newTask.appendChild(newCheckBox);
+    newTask.innerHTML += `${toDo[i].taskDescription}`;
   }
 }
 
@@ -98,6 +104,7 @@ function displayToDos(toDoArray) {
   for (var i = 0; i < toDoArray.length; i++) {
     var newToDoCard = document.createElement('div');
     newToDoCard.classList.add('to-do-task');
+    newToDoCard.setAttribute('data-index', i);
     newToDoCard.innerHTML = `
       <p>${toDoArray[i].title}</p>
       <ul class="card-inner-tasks${i}">
@@ -126,31 +133,22 @@ function parseStoredTasks(taskArray) {
   return tasks;
 }
 
-function parseStoredToDos(storedToDos) {
+function parseStoredToDos(toDos) {
   var toDoArray = [];
-  for (var i = 0; i < storedToDos.length; i++) {
-    var toDo = new ToDoList(storedToDos[i].title, parseStoredTasks(storedToDos[i].tasks));
+  for (var i = 0; i < toDos.length; i++) {
+    var toDo = new ToDoList(toDos[i].title, parseStoredTasks(storedToDos[i].tasks));
     toDoArray.push(toDo);
   }
   return toDoArray;
 }
 
 function checkOffTask(e) {
-  if (e.target.closest('.task-checkbox')) {
-    e.target.src = 'assets/checkbox-active.svg';
-  }
-  getIndexOfNode(e, parseStoredToDos(storedToDos));
-}
+  var toDoIndex = e.target.parentNode.parentNode.parentNode.dataset.index;
+  var taskIndex = e.target.parentNode.dataset.index;
+  var toDos = parseStoredToDos(storedToDos);
 
-function getIndexOfNode(e, toDos) {
-  for (var i = 0; i < toDos.length; i++) {
-    for (var j = 0; j < toDos[i].tasks.length; j++) {
-      var title = e.target.parentNode.innerText;
-      var taskDescription = storedToDos[i].tasks[j].taskDescription;
-      if (title === taskDescription) {
-        toDos[i].updateTask(j, toDos);
-      }
-    }
-  }
+  toDos[toDoIndex].updateTask(taskIndex, toDos);
+  localStorage.setItem('toDos', JSON.stringify(toDos));
+
   displayToDos(JSON.parse(localStorage.getItem('toDos')));
 }
