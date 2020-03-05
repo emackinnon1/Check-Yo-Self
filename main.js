@@ -127,7 +127,7 @@ function displayToDos(toDoArray) {
 function parseStoredTasks(taskArray) {
   var tasks = [];
   for (var i = 0; i < taskArray.length; i++) {
-    var task = new Task(taskArray[i].taskDescription);
+    var task = new Task(taskArray[i].taskDescription, taskArray[i].done);
     tasks.push(task);
   }
   return tasks;
@@ -148,7 +148,5 @@ function checkOffTask(e) {
   var toDos = parseStoredToDos(storedToDos);
 
   toDos[toDoIndex].updateTask(taskIndex, toDos);
-  localStorage.setItem('toDos', JSON.stringify(toDos));
-
-  displayToDos(JSON.parse(localStorage.getItem('toDos')));
+  displayToDos(toDos);
 }

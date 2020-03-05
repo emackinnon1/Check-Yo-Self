@@ -1,6 +1,6 @@
 class Task {
-  constructor(description) {
+  constructor(description, done) {
     this.taskDescription = description;
-    this.done = false;
+    this.done = done || false;
   }
 }
