@@ -7,10 +7,6 @@ class ToDoList {
     this.delete = false;
   }
 
-  parseStoredObject(object) {
-    // object.title =
-  }
-
   saveToStorage(obj) {
     var retrievedToDos = JSON.parse(localStorage.getItem('toDos'));
     retrievedToDos.push(obj);
@@ -25,8 +21,10 @@ class ToDoList {
 
   }
 
-  updateTask() {
-
+  updateTask(index, objects) {
+    this.tasks[index].done = true;
+    localStorage.setItem('toDos', JSON.stringify(objects));
+    console.log(objects);
   }
 
 }

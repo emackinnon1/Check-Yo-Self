@@ -52,11 +52,11 @@ function displayCurrentTasks(potentialTaskList) {
 }
 
 // deletes selected task from DOM and from currentTasks array
-function deleteCurrentTask(event) {
-  if (event.target.matches('.delete-current-task')) {
-    var index = event.target.closest('li').classList[1].slice(4);
+function deleteCurrentTask(e) {
+  if (e.target.matches('.delete-current-task')) {
+    var index = e.target.closest('li').classList[1].slice(4);
     currentTasks.splice(index, 1);
-    event.target.closest('li').remove();
+    e.target.closest('li').remove();
   }
 }
 
@@ -82,7 +82,11 @@ function makeToDoList() {
 // make inner task list for todo card
 function makeInnerTaskList(toDo, innerTasks) {
   for (var i = 0; i < toDo.length; i++) {
-    innerTasks.innerHTML += `<li><img class="task-checkbox" src="assets/checkbox.svg">${toDo[i].taskDescription}</li>`;
+    if (toDo[i].done === true) {
+      innerTasks.innerHTML += `<li><img class="task-checkbox" src="assets/checkbox-active.svg">${toDo[i].taskDescription}</li>`;
+    } else {
+      innerTasks.innerHTML += `<li><img class="task-checkbox" src="assets/checkbox.svg">${toDo[i].taskDescription}</li>`;
+    }
   }
 }
 
@@ -113,8 +117,40 @@ function displayToDos(toDoArray) {
   }
 }
 
-function checkOffTask(event) {
-  if (event.target.src = 'assets/checkbox.svg') {
-    event.target.src = 'assets/checkbox-active.svg';
+function parseStoredTasks(taskArray) {
+  var tasks = [];
+  for (var i = 0; i < taskArray.length; i++) {
+    var task = new Task(taskArray[i].taskDescription);
+    tasks.push(task);
   }
+  return tasks;
+}
+
+function parseStoredToDos(storedToDos) {
+  var toDoArray = [];
+  for (var i = 0; i < storedToDos.length; i++) {
+    var toDo = new ToDoList(storedToDos[i].title, parseStoredTasks(storedToDos[i].tasks));
+    toDoArray.push(toDo);
+  }
+  return toDoArray;
+}
+
+function checkOffTask(e) {
+  if (e.target.closest('.task-checkbox')) {
+    e.target.src = 'assets/checkbox-active.svg';
+  }
+  getIndexOfNode(e, parseStoredToDos(storedToDos));
+}
+
+function getIndexOfNode(e, toDos) {
+  for (var i = 0; i < toDos.length; i++) {
+    for (var j = 0; j < toDos[i].tasks.length; j++) {
+      var title = e.target.parentNode.innerText;
+      var taskDescription = storedToDos[i].tasks[j].taskDescription;
+      if (title === taskDescription) {
+        toDos[i].updateTask(j, toDos);
+      }
+    }
+  }
+  displayToDos(JSON.parse(localStorage.getItem('toDos')));
 }
