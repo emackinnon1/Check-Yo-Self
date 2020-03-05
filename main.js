@@ -4,14 +4,13 @@ var toDoTitle = document.querySelector('.todo-title');
 var newTaskInput = document.querySelector('.new-task-input');
 var currentTasksDisplay = document.querySelector('.current-tasks-display');
 var makeToDoBtn = document.querySelector('.new-todo-btn');
-var toDoDisplay = document.querySelector('.tasks-display');
+var toDoDisplay = document.querySelector('.lists');
 var clearAllBtn = document.querySelector('.clear-all-btn');
 var checkBoxes = document.querySelectorAll('.task-checkbox');
 
 // global variables
 var currentTasks = [];
 var listOfToDoLists = [];
-var storedToDos = JSON.parse(localStorage.getItem('toDos'));
 
 // event listeners
 addTaskBtn.addEventListener('click', makeNewCurrentTask);
@@ -19,15 +18,15 @@ currentTasksDisplay.addEventListener('click', deleteCurrentTask);
 makeToDoBtn.addEventListener('click', makeToDoList);
 clearAllBtn.addEventListener('click', clearCurrentTasks);
 toDoDisplay.addEventListener('click', checkOffTask);
+toDoDisplay.addEventListener('click', deleteList);
+toDoDisplay.addEventListener('click', makeUrgent);
 
 // sets local storage if not previously set
 window.onload = function() {
   if (!localStorage.getItem('toDos')) {
     localStorage.setItem('toDos', JSON.stringify([]));
   }
-  if (localStorage.toDos.length > 2) {
     displayToDos(JSON.parse(localStorage.getItem('toDos')));
-  }
 }
 
 // instantiates new task according to user input
@@ -73,6 +72,9 @@ function makeToDoList() {
   if (toDoTitle.value === '') {
     return;
   }
+  if (currentTasksDisplay.childElementCount === 0) {
+    return;
+  }
   var toDo = new ToDoList(toDoTitle.value, currentTasks);
   toDo.saveToStorage(toDo);
   displayToDos(JSON.parse(localStorage.getItem('toDos')));
@@ -84,13 +86,10 @@ function makeInnerTaskList(toDo, innerTasks) {
   for (var i = 0; i < toDo.length; i++) {
     var newTask = document.createElement('li');
     var newCheckBox = document.createElement('img');
-    if (toDo[i].done === true) {
-      newCheckBox.src = "assets/checkbox-active.svg"
-    } else {
-      newCheckBox.src = "assets/checkbox.svg";
-    }
-    innerTasks.appendChild(newTask);
+    newCheckBox.src = `${toDo[i].done ? "assets/checkbox-active.svg" : "assets/checkbox.svg"}`
     newTask.setAttribute('data-index', i);
+    newCheckBox.classList.add('checkbox');
+    innerTasks.appendChild(newTask);
     newTask.appendChild(newCheckBox);
     newTask.innerHTML += `${toDo[i].taskDescription}`;
   }
@@ -98,22 +97,30 @@ function makeInnerTaskList(toDo, innerTasks) {
 
 // display todo list cards
 function displayToDos(toDoArray) {
+  if (toDoArray.length < 1) {
+    document.querySelector('.prompt').classList.remove('hidden');
+  } else {
+    document.querySelector('.prompt').classList.add('hidden');
+  }
   toDoDisplay.innerHTML = '';
   for (var i = 0; i < toDoArray.length; i++) {
     var newToDoCard = document.createElement('div');
     newToDoCard.classList.add('to-do-task');
+    if (toDoArray[i].urgent) {
+      newToDoCard.classList.add("urgent-task");
+    }
     newToDoCard.setAttribute('data-index', i);
     newToDoCard.innerHTML = `
       <p>${toDoArray[i].title}</p>
-      <ul class="card-inner-tasks${i}">
+      <ul dataset-index="${i}" class="card-inner-tasks${i}">
       </ul>
       <div class="urgent-delete">
         <div class="urgent-icon">
-          <img src="assets/urgent.svg" alt="">
+          <img class="urgent" src="${toDoArray[i].urgent ? "assets/urgent-active.svg" : "assets/urgent.svg"}" alt="">
           <p>URGENT</p>
         </div>
         <div class="delete-icon">
-          <img src="assets/delete.svg" alt="">
+          <img class="delete" src="assets/delete.svg" alt="">
           <p>DELETE</p>
         </div>
       </div>`;
@@ -122,6 +129,7 @@ function displayToDos(toDoArray) {
   }
 }
 
+// turn tasks into usable instances
 function parseStoredTasks(taskArray) {
   var tasks = [];
   for (var i = 0; i < taskArray.length; i++) {
@@ -131,20 +139,62 @@ function parseStoredTasks(taskArray) {
   return tasks;
 }
 
+// turn todos into usable instances
 function parseStoredToDos(toDos) {
   var toDoArray = [];
   for (var i = 0; i < toDos.length; i++) {
-    var toDo = new ToDoList(toDos[i].title, parseStoredTasks(toDos[i].tasks));
+    var toDo = new ToDoList(toDos[i].title, parseStoredTasks(toDos[i].tasks), toDos[i].urgent);
     toDoArray.push(toDo);
   }
   return toDoArray;
 }
 
 function checkOffTask(e) {
+  if (!e.target.matches('.checkbox')) {
+    return;
+  }
   var toDoIndex = e.target.parentNode.parentNode.parentNode.dataset.index;
   var taskIndex = e.target.parentNode.dataset.index;
   var toDos = parseStoredToDos(JSON.parse(localStorage.getItem('toDos')));
 
   toDos[toDoIndex].updateTask(taskIndex, toDos);
   displayToDos(toDos);
+
 }
+
+function deleteList(e) {
+  var toDoIndex = e.target.parentNode.parentNode.parentNode.dataset.index;
+  var toDos = parseStoredToDos(JSON.parse(localStorage.getItem('toDos')));
+
+  if (!e.target.matches('.delete')) {
+    return;
+  }
+  if (!checkIfTasksDone(toDos[toDoIndex].tasks)) {
+    return;
+  }
+  toDos[toDoIndex].deleteFromStorage(toDoIndex);
+  displayToDos(JSON.parse(localStorage.getItem('toDos')));
+}
+
+//checks to make sure tasks are done before being used in deleteList function
+function checkIfTasksDone(taskArray) {
+  for (var i = 0; i < taskArray.length; i++) {
+    if (taskArray[i].done === false) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function makeUrgent(e) {
+  var toDoIndex = e.target.parentNode.parentNode.parentNode.dataset.index;
+  var toDos = parseStoredToDos(JSON.parse(localStorage.getItem('toDos')));
+
+  if (!e.target.matches('.urgent')) {
+    return;
+  }
+  toDos[toDoIndex].updateToDo(toDoIndex);
+  displayToDos(JSON.parse(localStorage.getItem('toDos')));
+}
+
+// toDoDisplay.childNodes[0].childNodes[5].childNodes[1].childNodes[1]

@@ -4,7 +4,6 @@ class ToDoList {
     this.tasks = tasks;
     this.timeStamp = Date.now();
     this.urgent = urgent || false;
-    this.delete = false;
   }
 
   saveToStorage(obj) {
@@ -13,16 +12,20 @@ class ToDoList {
     localStorage.setItem('toDos', JSON.stringify(retrievedToDos));
   }
 
-  deleteFromStorage() {
-
+  deleteFromStorage(index) {
+    var retrievedToDos = JSON.parse(localStorage.getItem('toDos'));
+    retrievedToDos.splice(index, 1);
+    localStorage.setItem('toDos', JSON.stringify(retrievedToDos));
   }
 
-  updateToDo() {
-
+  updateToDo(index) {
+    var retrievedToDos = JSON.parse(localStorage.getItem('toDos'));
+    retrievedToDos[index].urgent = !this.urgent;
+    localStorage.setItem('toDos', JSON.stringify(retrievedToDos));
   }
 
   updateTask(index, objects) {
-    this.tasks[index].done = true;
+    this.tasks[index].done = !this.tasks[index].done;
     localStorage.setItem('toDos', JSON.stringify(objects));
   }
 
