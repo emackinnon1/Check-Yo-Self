@@ -98,8 +98,6 @@ function makeInnerTaskList(toDo, innerTasks) {
 
 // display todo list cards
 function displayToDos(toDoArray) {
-  var toDosStorageArray = JSON.parse(localStorage.getItem('toDos'));
-
   toDoDisplay.innerHTML = '';
   for (var i = 0; i < toDoArray.length; i++) {
     var newToDoCard = document.createElement('div');
@@ -136,7 +134,7 @@ function parseStoredTasks(taskArray) {
 function parseStoredToDos(toDos) {
   var toDoArray = [];
   for (var i = 0; i < toDos.length; i++) {
-    var toDo = new ToDoList(toDos[i].title, parseStoredTasks(storedToDos[i].tasks));
+    var toDo = new ToDoList(toDos[i].title, parseStoredTasks(toDos[i].tasks));
     toDoArray.push(toDo);
   }
   return toDoArray;
@@ -145,7 +143,7 @@ function parseStoredToDos(toDos) {
 function checkOffTask(e) {
   var toDoIndex = e.target.parentNode.parentNode.parentNode.dataset.index;
   var taskIndex = e.target.parentNode.dataset.index;
-  var toDos = parseStoredToDos(storedToDos);
+  var toDos = parseStoredToDos(JSON.parse(localStorage.getItem('toDos')));
 
   toDos[toDoIndex].updateTask(taskIndex, toDos);
   displayToDos(toDos);
